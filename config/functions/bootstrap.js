@@ -12,7 +12,7 @@
 
 module.exports = async () => {
   console.log ('HEEEEELLLOOO from confi/functions/bootstrap!!!!');
-  //
+  //setting all the permissions that are not enabled on the role authenticated to enabled
   const authenticated = await strapi.query('role', 'users-permissions').findOne({ type: 'authenticated' });
   authenticated.permissions.filter(permission => permission.type == 'application' && !permission.enabled).forEach(permission => {
     strapi.query('permission', 'users-permissions').update( { id: permission.id}, {
