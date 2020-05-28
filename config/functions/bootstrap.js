@@ -10,6 +10,14 @@
  * See more details here: https://strapi.io/documentation/3.0.0-beta.x/concepts/configurations.html#bootstrap
  */
 
-module.exports = () => {
-  console.log ('HEEEEELLLOOO!!!!');
+module.exports = async () => {
+  console.log ('HEEEEELLLOOO from confi/functions/bootstrap!!!!');
+  //
+  const authenticated = await strapi.query('role', 'users-permissions').findOne({ type: 'authenticated' });
+  authenticated.permissions.filter(permission => permission.type == 'application' && !permission.enabled).forEach(permission => {
+    strapi.query('permission', 'users-permissions').update( { id: permission.id}, {
+      ...permission,
+      enabled: true
+    });
+  });
 };
